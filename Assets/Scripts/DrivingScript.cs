@@ -11,6 +11,17 @@ public class DrivingScript : MonoBehaviour
     public float maxSpeed = 150;
     public Rigidbody rb;
     public float currentSpeed;
+
+    //Światła tył
+    public GameObject backLights; 
+    // dźwięk silnika
+    public AudioSource engineSound;
+    float rpm;
+    public int currentGear = 1;
+    public float currentGearPerc;
+    public int numGears = 5;
+    public float gearLength = 5f;
+
     
     // Start is called before the first frame update
     void Start()
@@ -28,6 +39,8 @@ public class DrivingScript : MonoBehaviour
         accel = Mathf.Clamp(accel, -1,1);
         steer = Mathf.Clamp(steer, -1,1) * maxSteerAngle;
         brake = Mathf.Clamp(brake, 0, 1) * maxBrakeTorque;
+        if (brake != 0) backLights.SetActive(true);
+        else backLights.SetActive(false);
 
         float thrustTorque = 0;
         if (currentSpeed < maxSpeed) thrustTorque = accel * torque;
@@ -43,4 +56,5 @@ public class DrivingScript : MonoBehaviour
             wheel.wheel.transform.rotation = quat;
         }
     } 
+    
 }
