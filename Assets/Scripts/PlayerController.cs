@@ -18,5 +18,6 @@ public class PlayerController : MonoBehaviour
         float steer = Input.GetAxis("Horizontal");
         float brake = Input.GetAxis("Jump");
         drivingScript.Drive(accel, brake, steer);
+        drivingScript.EngineSound();
     }
 }

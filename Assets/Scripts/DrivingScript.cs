@@ -22,6 +22,8 @@ public class DrivingScript : MonoBehaviour
     public int numGears = 5;
     public float gearLength = 5f;
 
+
+
     
     // Start is called before the first frame update
     void Start()
@@ -56,5 +58,23 @@ public class DrivingScript : MonoBehaviour
             wheel.wheel.transform.rotation = quat;
         }
     } 
+
+    public void EngineSound()
+    {
+        float gearPerc = (1 / (float) numGears );
+        float targetGearFactor = Mathf.InverseLerp(gearPerc * currentGear, gearPerc * (currentGear + 1), Mathf.Abs(currentSpeed / maxSpeed));
+        currentGearPerc = Mathf.Lerp(currentGearPerc, targetGearFactor, Time.deltaTime * gearLength);
+        var gearNumFactor = currentGear / (float) numGears;
+        rpm = Mathf.Lerp(gearNumFactor, 1, currentGearPerc);
+        float speedPercent = Mathf.Abs(currentSpeed / maxSpeed);
+        float upperGearMax = (1/ (float) numGears) * (currentGear + 1);
+        float downGearMax = (1/ (float) numGears) * currentGear;
+
+        if (currentGear > 0 && speedPercent < downGearMax) currentGear--;
+        if (speedPercent > upperGearMax && currentGear < (numGears - 1)) currentGear++;
+
+        float pitch = Mathf.Lerp(1, 6, rpm);
+        engineSound.pitch = Mathf.Min(6, pitch) * 0.15f;
+    }
     
 }
